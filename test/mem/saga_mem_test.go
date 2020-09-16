@@ -2,10 +2,10 @@ package saga_test
 
 import (
 	"fmt"
-	"github.com/lysu/go-saga"
-	_ "github.com/lysu/go-saga/storage/memory"
+	"github.com/BulyakovHSE/go-saga"
+	_ "github.com/BulyakovHSE/go-saga/storage/memory"
+	"github.com/kataras/iris"
 	"github.com/stretchr/testify/assert"
-	"golang.org/x/net/context"
 	"testing"
 )
 
@@ -30,7 +30,7 @@ func TestAllSuccess(t *testing.T) {
 	from, to := "foo", "bar"
 	amount := 100
 
-	ctx := context.Background()
+	ctx := new(iris.Context)
 
 	var sagaID uint64 = 1
 	saga.StartSaga(ctx, sagaID).
@@ -55,7 +55,7 @@ func TestDepositFail(t *testing.T) {
 	from, to := "foo", "bar"
 	amount := 100
 
-	ctx := context.Background()
+	ctx := new(iris.Context)
 
 	var sagaID uint64 = 1
 	saga.StartSaga(ctx, sagaID).
@@ -87,7 +87,7 @@ var (
 	testMode FailureMode
 )
 
-func DeduceAccount(ctx context.Context, account string, amount int) error {
+func DeduceAccount(ctx iris.Context, account string, amount int) error {
 	if testMode == DeduceFail {
 		return fmt.Errorf("Deduce failure")
 	}
@@ -95,12 +95,12 @@ func DeduceAccount(ctx context.Context, account string, amount int) error {
 	return nil
 }
 
-func CompensateDeduce(ctx context.Context, account string, amount int) error {
+func CompensateDeduce(ctx iris.Context, account string, amount int) error {
 	memDB[account] = (memDB[account] + amount)
 	return nil
 }
 
-func DepositAccount(ctx context.Context, account string, amount int) error {
+func DepositAccount(ctx iris.Context, account string, amount int) error {
 	if testMode == DepositFail {
 		return fmt.Errorf("Deposit failure")
 	}
@@ -108,11 +108,11 @@ func DepositAccount(ctx context.Context, account string, amount int) error {
 	return nil
 }
 
-func CompensateDeposit(ctx context.Context, account string, amount int) error {
+func CompensateDeposit(ctx iris.Context, account string, amount int) error {
 	memDB[account] = (memDB[account] - amount)
 	return nil
 }
 
-func PTest1(ctx context.Context, name *string, age int) {
+func PTest1(ctx iris.Context, name *string, age int) {
 
 }

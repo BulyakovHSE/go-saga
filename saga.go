@@ -8,11 +8,11 @@
 package saga
 
 import (
+	"github.com/kataras/iris"
 	"reflect"
 	"time"
 
-	"github.com/lysu/go-saga/storage"
-	"golang.org/x/net/context"
+	"github.com/BulyakovHSE/go-saga/storage"
 	"log"
 	"os"
 )
@@ -40,7 +40,7 @@ func SetLogger(l *log.Logger) {
 type Saga struct {
 	id      uint64
 	logID   string
-	context context.Context
+	context iris.Context
 	sec     *ExecutionCoordinator
 }
 

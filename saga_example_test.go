@@ -1,11 +1,9 @@
 package saga_test
 
 import (
-	"golang.org/x/net/context"
+	"github.com/BulyakovHSE/go-saga"
+	"github.com/kataras/iris"
 	"time"
-
-	"github.com/lysu/go-saga"
-	_ "github.com/lysu/go-saga/storage/kafka"
 )
 
 // This example show how to initialize an Saga execution coordinator(SEC) and add Sub-transaction to it, then start a transfer transaction.
@@ -13,19 +11,19 @@ import (
 func Example_sagaTransaction() {
 
 	// 1. Define sub-transaction method, anonymous method is NOT required, Just define them as normal way.
-	DeduceAccount := func(ctx context.Context, account string, amount int) error {
+	DeduceAccount := func(ctx iris.Context, account string, amount int) error {
 		// Do deduce amount from account, like: account.money - amount
 		return nil
 	}
-	CompensateDeduce := func(ctx context.Context, account string, amount int) error {
+	CompensateDeduce := func(ctx iris.Context, account string, amount int) error {
 		// Compensate deduce amount to account, like: account.money + amount
 		return nil
 	}
-	DepositAccount := func(ctx context.Context, account string, amount int) error {
+	DepositAccount := func(ctx iris.Context, account string, amount int) error {
 		// Do deposit amount to account, like: account.money + amount
 		return nil
 	}
-	CompensateDeposit := func(ctx context.Context, account string, amount int) error {
+	CompensateDeposit := func(ctx iris.Context, account string, amount int) error {
 		// Compensate deposit amount from account, like: account.money - amount
 		return nil
 	}
@@ -44,7 +42,7 @@ func Example_sagaTransaction() {
 
 	from, to := "foo", "bar"
 	amount := 100
-	ctx := context.Background()
+	ctx := new(iris.Context)
 
 	var sagaID uint64 = 2
 	saga.StartSaga(ctx, sagaID).

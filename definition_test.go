@@ -1,24 +1,24 @@
 package saga
 
 import (
+	"github.com/kataras/iris"
 	"github.com/stretchr/testify/assert"
-	"golang.org/x/net/context"
 	"testing"
 )
 
-func T1(ctx context.Context) {
+func T1(ctx iris.Context) {
 
 }
 
-func C1(ctx context.Context) {
+func C1(ctx iris.Context) {
 
 }
 
-func T2(ctx context.Context) {
+func T2(ctx iris.Context) {
 
 }
 
-func C2(ctx context.Context) {
+func C2(ctx iris.Context) {
 
 }
 

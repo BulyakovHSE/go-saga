@@ -1,7 +1,7 @@
 package saga
 
 import (
-	"golang.org/x/net/context"
+	"github.com/kataras/iris"
 	"reflect"
 )
 
@@ -65,7 +65,7 @@ func subTxMethod(obj interface{}) reflect.Value {
 		panic("Regist object must be a func")
 	}
 	if funcValue.Type().NumIn() < 1 ||
-		funcValue.Type().In(0) != reflect.TypeOf((*context.Context)(nil)).Elem() {
+		funcValue.Type().In(0) != reflect.TypeOf((*iris.Context)(nil)).Elem() {
 		panic("First argument must use context.Context.")
 	}
 	return funcValue
